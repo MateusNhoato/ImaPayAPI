@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\stefa\\OneDrive\\Área de Trabalho\\API\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj": {}
+    "C:\\Users\\weslleycomprasint\\Desktop\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\stefa\\OneDrive\\Área de Trabalho\\API\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj": {
+    "C:\\Users\\weslleycomprasint\\Desktop\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\stefa\\OneDrive\\Área de Trabalho\\API\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
+        "projectUniqueName": "C:\\Users\\weslleycomprasint\\Desktop\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
         "projectName": "ImaPayAPI",
-        "projectPath": "C:\\Users\\stefa\\OneDrive\\Área de Trabalho\\API\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
-        "packagesPath": "C:\\Users\\stefa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\stefa\\OneDrive\\Área de Trabalho\\API\\ImaPayAPI\\ImaPayAPI\\obj\\",
+        "projectPath": "C:\\Users\\weslleycomprasint\\Desktop\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
+        "packagesPath": "C:\\Users\\weslleycomprasint\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\weslleycomprasint\\Desktop\\ImaPayAPI\\ImaPayAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\stefa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\weslleycomprasint\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -89,7 +89,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
