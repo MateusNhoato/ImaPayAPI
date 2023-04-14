@@ -8,6 +8,8 @@ namespace ImaPayAPI.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<TransactionHistory> TransactionsHistory { get; set; }
+
+
         public ImayPayContext(DbContextOptions options) : base(options)
         {
         }

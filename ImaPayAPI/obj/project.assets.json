@@ -3724,23 +3724,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\weslleycomprasint\\.nuget\\packages\\": {},
+    "C:\\Users\\pc\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\weslleycomprasint\\Desktop\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
+      "projectUniqueName": "C:\\roles\\projetos\\csharp\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
       "projectName": "ImaPayAPI",
-      "projectPath": "C:\\Users\\weslleycomprasint\\Desktop\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
-      "packagesPath": "C:\\Users\\weslleycomprasint\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\weslleycomprasint\\Desktop\\ImaPayAPI\\ImaPayAPI\\obj\\",
+      "projectPath": "C:\\roles\\projetos\\csharp\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
+      "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
+      "outputPath": "C:\\roles\\projetos\\csharp\\ImaPayAPI\\ImaPayAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\weslleycomprasint\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\pc\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3812,7 +3812,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }
