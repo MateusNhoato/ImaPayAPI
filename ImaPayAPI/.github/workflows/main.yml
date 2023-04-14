@@ -1,0 +1,16 @@
+name: Atualizar repositório
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Define o intervalo de tempo de atualização
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repositório
+      uses: actions/checkout@v2
+      
+    - name: Atualizar repositório
+      run: git pull https://github.com/MateusNhoato/ImaPayAPI.git main

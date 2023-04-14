@@ -46,7 +46,7 @@ namespace ImaPayAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("api/[controller]/Hist")]
+        [HttpGet("api/[controller]/TransferHistory")]
 
         // Histórico de Transações 
         public ActionResult TransferHistory()
