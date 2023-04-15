@@ -1,6 +1,6 @@
 ﻿namespace ImaPayAPI.Models.DTO
 {
-    public class UserDTO
+    public class UserInfoDTO
     {
         public string Name { get; set; } = string.Empty;
         public string Account { get; set; } = string.Empty;
