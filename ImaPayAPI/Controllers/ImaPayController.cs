@@ -1,39 +1,54 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ImaPayAPI.Context;
+using ImaPayAPI.Models;
+using ImaPayAPI.Models.DTO;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ImaPayAPI.Controllers
 {
+    [ApiController]
     public class ImaPayController : Controller
     {
-        // Colocar injenção de dependência do contexto
-        public ImaPayController() { }
+        private ImayPayContext _context;
+       
+        public ImaPayController(ImayPayContext context) {
+            _context = context;
+                }
 
-        // Cadastro de Usuarios (Colocar rota)
-        public ActionResult Register()
-        {
+        // Registro do usuário
+        [HttpPost("api/[controller]/Register")]
+        public  ActionResult Register()
+        {       
+
             return Ok();
         }
 
-        // Login (Colocar rota)
+        // Login 
+        [HttpGet("api/[controller]/Login")]
         public ActionResult Login()
         {
+            
             return Ok();
         }
 
+        [HttpGet("api/[controller]/Info")]
 
-        // Informações do usuário (Colocar rota)
+        // Informações do usuário 
         public ActionResult Info()
         {
             return Ok();
         }
 
-        // Transferência (Colocar rota)
+
+        // Transferência
+        [HttpPatch("api/[controller]/Transfer")]
         public ActionResult Transfer()
         {
             return Ok();
         }
 
+        [HttpGet("api/[controller]/TransferHistory")]
 
-        // Histórico de Transações (Colocar rota)
+        // Histórico de Transações 
         public ActionResult TransferHistory()
         {
             return Ok();

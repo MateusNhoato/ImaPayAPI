@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vSs4fX6zI1f4SFRuklmyfH1exLgI1ddk7NZ+y/dUaaLySg9WuHVQsyEZ5tamXIIqAT+qMcsmgeflWZDtjC0hHQ==",
+  "dgSpecHash": "KHu2b6BgxOmvD/aiDp1KPgrrH1GnTee//94JWSUKQvWQiiHhkKg9vIl8tzyMopgqZ3nhTCfZRKm0CiMAciHOdA==",
   "success": true,
-  "projectFilePath": "C:\\roles\\projetos\\csharp\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
+  "projectFilePath": "C:\\roles\\projetos\\csharp\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pc\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\pc\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
