@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "TwULbr+kRaEE5npyhXq8K000C95ty48pD7ANdggV4q98bTTXkJYH5BdXJOjdIXFP8d9clS6mATd68t9tSb3HJA==",
+  "dgSpecHash": "6DMgrfaKDt9dKXbdZdiwv4HKD/P2piFhCwph57nuJe8APRqwNoNCvylgSsdBHSTqHilFrYfBSVoFgiS5gbylaA==",
   "success": true,
   "projectFilePath": "/home/thiago/Documents/SharpCoders/code-breakers/hackadev/ImaPay/ImaPayAPI/ImaPayAPI/ImaPayAPI.csproj",
   "expectedPackageFiles": [
     "/home/thiago/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
+    "/home/thiago/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "/home/thiago/.nuget/packages/azure.core/1.24.0/azure.core.1.24.0.nupkg.sha512",
     "/home/thiago/.nuget/packages/azure.identity/1.6.0/azure.identity.1.6.0.nupkg.sha512",
     "/home/thiago/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",

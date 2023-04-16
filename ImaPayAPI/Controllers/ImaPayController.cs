@@ -47,6 +47,7 @@ namespace ImaPayAPI.Controllers
 
             var userAccount = _mapper.Map<UserInfoDTO>(user);
             return Ok(userAccount);
+
         }
 
 
