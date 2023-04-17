@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6DMgrfaKDt9dKXbdZdiwv4HKD/P2piFhCwph57nuJe8APRqwNoNCvylgSsdBHSTqHilFrYfBSVoFgiS5gbylaA==",
+  "dgSpecHash": "gVubv2TZX5lBsIN0lTB7/DyK+CexJplXxaNXu215ZzOgzTVysXkV4bhml0SnqO+IskLHBfTeFqpl/ayaDbGCMw==",
   "success": true,
   "projectFilePath": "/home/thiago/Documents/SharpCoders/code-breakers/hackadev/ImaPay/ImaPayAPI/ImaPayAPI/ImaPayAPI.csproj",
   "expectedPackageFiles": [
@@ -39,13 +39,18 @@
     "/home/thiago/.nuget/packages/microsoft.identitymodel.protocols/6.21.0/microsoft.identitymodel.protocols.6.21.0.nupkg.sha512",
     "/home/thiago/.nuget/packages/microsoft.identitymodel.protocols.openidconnect/6.21.0/microsoft.identitymodel.protocols.openidconnect.6.21.0.nupkg.sha512",
     "/home/thiago/.nuget/packages/microsoft.identitymodel.tokens/6.21.0/microsoft.identitymodel.tokens.6.21.0.nupkg.sha512",
+    "/home/thiago/.nuget/packages/microsoft.netcore.app/2.2.8/microsoft.netcore.app.2.2.8.nupkg.sha512",
+    "/home/thiago/.nuget/packages/microsoft.netcore.dotnetapphost/2.2.8/microsoft.netcore.dotnetapphost.2.2.8.nupkg.sha512",
+    "/home/thiago/.nuget/packages/microsoft.netcore.dotnethostpolicy/2.2.8/microsoft.netcore.dotnethostpolicy.2.2.8.nupkg.sha512",
+    "/home/thiago/.nuget/packages/microsoft.netcore.dotnethostresolver/2.2.8/microsoft.netcore.dotnethostresolver.2.2.8.nupkg.sha512",
     "/home/thiago/.nuget/packages/microsoft.netcore.platforms/5.0.0/microsoft.netcore.platforms.5.0.0.nupkg.sha512",
-    "/home/thiago/.nuget/packages/microsoft.netcore.targets/1.1.0/microsoft.netcore.targets.1.1.0.nupkg.sha512",
+    "/home/thiago/.nuget/packages/microsoft.netcore.targets/2.0.0/microsoft.netcore.targets.2.0.0.nupkg.sha512",
     "/home/thiago/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
     "/home/thiago/.nuget/packages/microsoft.sqlserver.server/1.0.0/microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "/home/thiago/.nuget/packages/microsoft.win32.registry/5.0.0/microsoft.win32.registry.5.0.0.nupkg.sha512",
     "/home/thiago/.nuget/packages/microsoft.win32.systemevents/5.0.0/microsoft.win32.systemevents.5.0.0.nupkg.sha512",
     "/home/thiago/.nuget/packages/mono.texttemplating/2.2.1/mono.texttemplating.2.2.1.nupkg.sha512",
+    "/home/thiago/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512",
     "/home/thiago/.nuget/packages/swashbuckle.aspnetcore/6.2.3/swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
     "/home/thiago/.nuget/packages/swashbuckle.aspnetcore.swagger/6.2.3/swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
     "/home/thiago/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.2.3/swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
@@ -79,7 +84,10 @@
     "/home/thiago/.nuget/packages/system.text.json/7.0.0/system.text.json.7.0.0.nupkg.sha512",
     "/home/thiago/.nuget/packages/system.threading.tasks/4.3.0/system.threading.tasks.4.3.0.nupkg.sha512",
     "/home/thiago/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-    "/home/thiago/.nuget/packages/system.windows.extensions/5.0.0/system.windows.extensions.5.0.0.nupkg.sha512"
+    "/home/thiago/.nuget/packages/system.windows.extensions/5.0.0/system.windows.extensions.5.0.0.nupkg.sha512",
+    "/home/thiago/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.16/microsoft.aspnetcore.app.ref.6.0.16.nupkg.sha512",
+    "/home/thiago/.nuget/packages/microsoft.netcore.app.host.linux-x64/6.0.16/microsoft.netcore.app.host.linux-x64.6.0.16.nupkg.sha512",
+    "/home/thiago/.nuget/packages/microsoft.netcore.app.ref/6.0.16/microsoft.netcore.app.ref.6.0.16.nupkg.sha512"
   ],
   "logs": []
 }
