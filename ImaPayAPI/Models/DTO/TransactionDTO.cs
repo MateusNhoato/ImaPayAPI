@@ -1,6 +1,6 @@
 ﻿namespace ImaPayAPI.Models.DTO
 {
-    public class TranscationDTO
+    public class TransactionDTO
     {
         public DateTime Date { get; set; }
         public string Agency { get; set; } = string.Empty;
