@@ -19,10 +19,15 @@ namespace ImaPayAPI.Controllers
 
         // Registro do usuário
         [HttpPost("api/[controller]/Register")]
-        public  ActionResult Register()
-        {       
+        public ActionResult<UserInfoDTO> Register(UserRegisterDTO user)
+        {
+            var result = _context.Users.Register(user);
 
-            return Ok();
+            if (result == null) return BadRequest(new {
+                Moment = DateTime.Now,
+                Message = $"Não foi possível cadastrar o usuário."
+            });
+            return Ok(result);
         }
 
         // Login 
