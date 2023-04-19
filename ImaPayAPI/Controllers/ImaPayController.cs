@@ -2,6 +2,7 @@
 using ImaPayAPI.Models;
 using ImaPayAPI.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 namespace ImaPayAPI.Controllers
 {
@@ -9,17 +10,30 @@ namespace ImaPayAPI.Controllers
     public class ImaPayController : Controller
     {
         private ImayPayContext _context;
+        private IMapper _mapper;
        
-        public ImaPayController(ImayPayContext context) {
+        public ImaPayController(ImayPayContext context, IMapper mapper) {
             _context = context;
+            _mapper = mapper;
                 }
 
         // Registro do usuário
         [HttpPost("api/[controller]/Register")]
-        public  ActionResult Register()
-        {       
+        public ActionResult<UserInfoDTO> Register(UserRegisterDTO userDto)
+        {
+            var user = _mapper.Map<User>(userDto);
+            user.Balance = 5000;
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            
+            var result = _mapper.Map<UserInfoDTO>(user);
 
-            return Ok();
+            if (result == null) return BadRequest(new {
+                Moment = DateTime.Now,
+                Message = $"Não foi possível cadastrar o usuário."
+            });
+
+            return Ok(result);
         }
 
         // Login 
@@ -33,9 +47,18 @@ namespace ImaPayAPI.Controllers
         [HttpGet("api/[controller]/Info")]
 
         // Informações do usuário 
-        public ActionResult Info()
+        public ActionResult<UserInfoDTO> Info(string account)
         {
-            return Ok();
+            var user = _context.Users.FirstOrDefault(u => u.Account == account);
+
+            if (user == null) return NotFound(new {
+                Moment = DateTime.Now,
+                Message = $"Usuário da conta {account} não encontrado."
+            });
+
+            var userAccount = _mapper.Map<UserInfoDTO>(user);
+            return Ok(userAccount);
+
         }
 
 
