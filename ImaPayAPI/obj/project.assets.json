@@ -4647,24 +4647,32 @@
     ]
   },
   "packageFolders": {
-    "/home/thiago/.nuget/packages/": {}
+    "C:\\Users\\pc\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/thiago/Documents/SharpCoders/code-breakers/hackadev/ImaPay/ImaPayAPI/ImaPayAPI/ImaPayAPI.csproj",
+      "projectUniqueName": "C:\\roles\\projetos\\csharp\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
       "projectName": "ImaPayAPI",
-      "projectPath": "/home/thiago/Documents/SharpCoders/code-breakers/hackadev/ImaPay/ImaPayAPI/ImaPayAPI/ImaPayAPI.csproj",
-      "packagesPath": "/home/thiago/.nuget/packages/",
-      "outputPath": "/home/thiago/Documents/SharpCoders/code-breakers/hackadev/ImaPay/ImaPayAPI/ImaPayAPI/obj/",
+      "projectPath": "C:\\roles\\projetos\\csharp\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
+      "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
+      "outputPath": "C:\\roles\\projetos\\csharp\\ImaPayAPI\\ImaPayAPI\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/home/thiago/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\pc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4735,20 +4743,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.16, 6.0.16]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.linux-x64",
-            "version": "[6.0.16, 6.0.16]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.16, 6.0.16]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -4757,7 +4751,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.203/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }
