@@ -21,19 +21,43 @@ namespace ImaPayAPI.Controllers
         [HttpPost("api/[controller]/Register")]
         public ActionResult<UserInfoDTO> Register(UserRegisterDTO userDto)
         {
-            var user = _mapper.Map<User>(userDto);
-            user.Balance = 5000;
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            
-            var result = _mapper.Map<UserInfoDTO>(user);
+            try
+            {
+                if (userDto is null)
+                    return BadRequest(new
+                    {
+                        Moment = DateTime.Now,
+                        Message = "Não foi possível cadastrar o usuário."
+                    });
 
-            if (result == null) return BadRequest(new {
-                Moment = DateTime.Now,
-                Message = $"Não foi possível cadastrar o usuário."
-            });
 
-            return Ok(result);
+                User user = _mapper.Map<User>(userDto);
+                user.Balance = 5000;
+                user.Agency = 0001;
+                user.Account = Guid.NewGuid().ToString();
+
+
+                _context.Users.Add(user);
+                _context.SaveChanges();
+
+                var userToAdd = _mapper.Map<UserInfoDTO>(user);
+
+                if (userToAdd == null) return BadRequest(new
+                {
+                    Moment = DateTime.Now,
+                    Message = $"Não foi possível cadastrar o usuário."
+                });
+
+                return Ok(userToAdd);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new
+                {
+                    Moment = DateTime.Now,
+                    Message = "Não foi possível cadastrar o usuário."
+                });
+            }
         }
 
         // Login 
@@ -49,15 +73,28 @@ namespace ImaPayAPI.Controllers
         // Informações do usuário 
         public ActionResult<UserInfoDTO> Info(string account)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Account == account);
+            try
+            {
+                var user = _context.Users.FirstOrDefault(u => u.Account == account);
 
-            if (user == null) return NotFound(new {
-                Moment = DateTime.Now,
-                Message = $"Usuário da conta {account} não encontrado."
-            });
+                if (user == null) return NotFound(new
+                {
+                    Moment = DateTime.Now,
+                    Message = $"Usuário da conta {account} não encontrado."
+                });
 
-            var userAccount = _mapper.Map<UserInfoDTO>(user);
-            return Ok(userAccount);
+                var userAccount = _mapper.Map<UserInfoDTO>(user);
+                return Ok(userAccount);
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(500, new
+                {
+                    Moment = DateTime.Now,
+                    Message = "Não foi possível encontrar o usuário."
+                });
+            }
 
         }
 
