@@ -4,7 +4,7 @@
     {
         public string Name { get; set; } = null!;
         public string Account { get; set; } = null!;
-        public int Agency { get; set; }
+        public string Agency { get; set; } = null!;
         public int Balance { get; set; }
         public int Investments { get; set; }
         public int Savings { get; set; }
