@@ -30,5 +30,6 @@ public class User : Entity
     [Required]
     public decimal Balance { get; set; }
     public bool IsActive { get; set; } = true;
-    
+    public ICollection<Transaction> transactions { get; set; }
+
 }
