@@ -188,10 +188,47 @@ namespace ImaPayAPI.Controllers
 
 
         // Transferência
-        [HttpPatch("api/[controller]/Transfer")]
-        public ActionResult Transfer()
+        [HttpPost("Transfer")]
+        public ActionResult Transfer([FromBody] TransactionDTO transactionDTO)
         {
-            return Ok();
+            try
+            {
+                var valueTransfer = transactionDTO.ValueTransaction;
+                var user = _context.Users.Find(transactionDTO.UserId);
+                decimal balance = (decimal)_context.Entry(user).Property(u => u.Balance).CurrentValue;
+                
+
+                if (valueTransfer > balance)
+                {
+
+                    return NotFound(new { Message = $"Sem saldo: {balance}, valor da transferência {valueTransfer}" });
+                }
+                else
+                {
+                    user.Balance = balance - valueTransfer;
+                }
+
+                var transaction = _mapper.Map<Transaction>(transactionDTO);
+               // string date = String.Format("{yyyy-MM-dd", transaction.Date);
+                if (transaction.Date.Day != DateTime.Today.Day)
+                    transaction.Status = "Agendada";
+                else
+                    transaction.Status = "Realizada";
+                
+                _context.Transactions.Add(transaction);
+                _context.SaveChanges();
+                return Ok(_mapper.Map<TransactionInfoDTO>(transaction));
+            }
+            catch(Exception) 
+            {
+                return StatusCode(500, new
+                {
+                    Moment = DateTime.Now,
+                    Message = "Não foi possível concluir a transação. Tente novamente mais tarde."
+                });
+            }
+            
+
         }
 
         // Histórico de Transações
