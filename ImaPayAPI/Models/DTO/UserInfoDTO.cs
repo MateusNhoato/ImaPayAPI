@@ -2,11 +2,12 @@
 {
     public class UserInfoDTO
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Account { get; set; } = string.Empty;
-        public int Agency { get; set; }
-        public string Balance { get; set; } = string.Empty;
+        public string Name { get; set; } = null!;
+        public string Account { get; set; } = null!;
+        public string Agency { get; set; } = null!;
+        public int Balance { get; set; }
+        public int Investments { get; set; }
+        public int Savings { get; set; }
       
     }
 }
