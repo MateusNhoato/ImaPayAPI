@@ -11,6 +11,10 @@ namespace ImaPayAPI.Profiles
             CreateMap<TransactionDTO, Transaction>();
             CreateMap<Transaction, TransactionInfoDTO>();
             CreateMap<TransactionInfoDTO, Transaction>();
+            CreateMap<User, UserRegisterDTO>();
+            CreateMap<User, UserLoginDTO>();
+            CreateMap<User, UserInfoDTO>();
+            CreateMap<UserRegisterDTO, User>();
         }
     }
 }

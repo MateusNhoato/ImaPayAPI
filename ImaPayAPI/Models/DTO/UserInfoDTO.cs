@@ -5,9 +5,9 @@
         public string Name { get; set; } = null!;
         public string Account { get; set; } = null!;
         public string Agency { get; set; } = null!;
-        public int Balance { get; set; }
-        public int Investments { get; set; }
-        public int Savings { get; set; }
+        public decimal Balance { get; set; }
+        public decimal Investments { get; set; }
+        public decimal Savings { get; set; }
       
     }
 }

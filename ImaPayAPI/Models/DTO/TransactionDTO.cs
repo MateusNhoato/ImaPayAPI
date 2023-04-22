@@ -7,6 +7,5 @@
         public string Account { get; set; } = null!;
         public string AccountType { get; set; } = null!;
         public decimal ValueTransaction { get; set; }
-        public int UserId { get; set; } 
     }
 }

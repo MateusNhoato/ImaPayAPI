@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ImaPayAPI.Migrations
 {
     [DbContext(typeof(ImayPayContext))]
-    [Migration("20230421182513_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230422130515_teste")]
+    partial class teste
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
