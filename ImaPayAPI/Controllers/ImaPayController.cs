@@ -117,12 +117,12 @@ namespace ImaPayAPI.Controllers
         }
 
         [HttpPost("Login")]
-        public ActionResult<UserLoginDTO> Login(string email, string password)
+        public ActionResult<UserLoginDTO> Login(UserLoginDTO dto)
         {
             try
             {
                 // Encontrar usuário pelo email
-                var user = _context.Users.FirstOrDefault(x => x.Email == email);
+                var user = _context.Users.FirstOrDefault(x => x.Email == dto.Email);
 
                 // Validação email
                 if (user == null) return NotFound(new
@@ -132,7 +132,7 @@ namespace ImaPayAPI.Controllers
                 });
 
                 // Validação senha
-                if (user.Password != password) return NotFound(new
+                if (user.Password != dto.Password) return NotFound(new
                 {
                     Moment = DateTime.Now,
                     Message = $"Senha incorreta."
