@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ImaPayAPI.Models;
 
@@ -29,7 +30,13 @@ public class User : Entity
     public string Address { get; set; } = null!;
     [Required]
     public decimal? Balance { get; set; } = null!;
+    [Required]
+    public decimal Investments { get; set; }
+    [Required]
+    public decimal Savings { get; set; }
+
     public bool IsActive { get; set; } = true;
+    [NotMapped]
     public ICollection<Transaction> transactions { get; set; }
 
 }

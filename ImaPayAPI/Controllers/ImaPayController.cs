@@ -7,6 +7,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ImaPayAPI.Services;
+using ImaPayAPI.Services.Exceptions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Primitives;
+using ImaPayAPI.Services.Token;
+using ImaPayAPI.Services.DTO;
 
 namespace ImaPayAPI.Controllers
 {
@@ -14,105 +20,55 @@ namespace ImaPayAPI.Controllers
     [ApiController]
     public class ImaPayController : Controller
     {
-        private ImayPayContext _context;
-        private IMapper _mapper;
-
-        public ImaPayController(ImayPayContext context, IMapper mapper) {
-            _context = context;
-            _mapper = mapper;
-        }
-
-        protected string GerarJwt(User user, DateTime? Expires)
-        {
-            var claims = new List<Claim>();
-
-            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
-
-            var identityClaims = new ClaimsIdentity();
-            identityClaims.AddClaims(claims);
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(TokenSettings.Secret);
-            var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
-            {
-                Subject = identityClaims,
-                Expires = Expires,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            });
-
-            var encodedToken = tokenHandler.WriteToken(token);
-
-            return encodedToken;
-        }
+        private RegisterUserService _registerUserService;
+        private LoginService _loginService;
+        private ValidateAndReturnUserService _validateAndReturnUserService;
+        private TransferService _transferService;
+        private TransferHistoryService _transferHistoryService;
         
-        protected int? ValidateUserAndGetId(string token)
-        {   
-            try
-            {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(TokenSettings.Secret);
+        private DtoService _dtoService;
 
-                tokenHandler.ValidateToken(token, new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
 
-                var jwtToken = (JwtSecurityToken)validatedToken;
-                var userId = jwtToken.Claims.First(x => x.Type == JwtRegisteredClaimNames.Sub).Value;
 
-                return int.Parse(userId);
-            }
-            catch
-            {
-                return null;
-            }
+        public ImaPayController(RegisterUserService registerUserService, 
+                                LoginService loginService, 
+                                ValidateAndReturnUserService validateAndReturnUserService,
+                                DtoService dtoService,
+                                TransferService transferService,
+                                TransferHistoryService transferHistoryService
+                                )
+        {
+            _registerUserService = registerUserService;
+            _loginService = loginService;
+            _validateAndReturnUserService = validateAndReturnUserService;
+            _dtoService = dtoService;
+            _transferService = transferService;
+            _transferHistoryService = transferHistoryService;
+            
         }
+
 
         // Registro do usuário
         [HttpPost("api/[controller]/Register")]
-        public ActionResult<UserInfoDTO> Register(UserRegisterDTO userDto)
+        public ActionResult Register(UserRegisterDTO userDto)
         {
             try
             {
-                if (userDto is null)
-                    return BadRequest(new
-                    {
-                        Moment = DateTime.Now,
-                        Message = "Não foi possível cadastrar o usuário."
-                    });
-
-
-                User user = _mapper.Map<User>(userDto);
-                user.Balance = 5000;
-                user.Agency = 0001;
-                user.Account = Guid.NewGuid().ToString();
-
-
-                _context.Users.Add(user);
-                _context.SaveChanges();
-
-                var userToAdd = _mapper.Map<UserInfoDTO>(user);
-
-                if (userToAdd == null) return BadRequest(new
-                {
-                    Moment = DateTime.Now,
-                    Message = $"Não foi possível cadastrar o usuário."
-                });
-
-                return Ok(userToAdd);
+                _registerUserService.Register(userDto);
+                return Ok("Usuário cadastrado com sucesso!");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return StatusCode(500, new
-                {
-                    Moment = DateTime.Now,
-                    Message = "Não foi possível cadastrar o usuário."
-                });
+                switch (e){
+                    case BadHttpRequestException:
+                        return BadRequest(e.Message);
+                    case NotFoundException:
+                        return NotFound(e.Message);
+                    case UnauthorizedAccessException: 
+                        return Unauthorized(e.Message);
+                    default: 
+                        return StatusCode(500, "Houve algum problema no servidor.");
+                }
             }
         }
 
@@ -121,67 +77,51 @@ namespace ImaPayAPI.Controllers
         {
             try
             {
-                // Encontrar usuário pelo email
-                var user = _context.Users.FirstOrDefault(x => x.Email == dto.Email);
+                var token = _loginService.Login(dto);
 
-                // Validação email
-                if (user == null) return NotFound(new
-                {
-                    Moment = DateTime.Now,
-                    Message = $"Email não encontrado."
-                });
-
-                // Validação senha
-                if (user.Password != dto.Password) return NotFound(new
-                {
-                    Moment = DateTime.Now,
-                    Message = $"Senha incorreta."
-                });
-
-                var userAccount = _mapper.Map<UserLoginDTO>(user);
-
-                // Chamando método para gerar token ao logar
-                var Expires = DateTime.Now.AddHours(2);
-                GerarJwt(user, Expires);
-
-                return Ok(userAccount);
+                return Ok(token);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return StatusCode(500, new
+                switch (e)
                 {
-                    Moment = DateTime.Now,
-                    Message = "Não foi possível acessar o servidor. Tente mais tarde."
-                });
+                    case BadHttpRequestException:
+                        return BadRequest(e.Message);
+                    case NotFoundException:
+                        return NotFound(e.Message);
+                    case UnauthorizedAccessException:
+                        return Unauthorized(e.Message);
+                    default:
+                        return StatusCode(500, "Houve algum problema no servidor.");
+                }
             }
         }
 
         [HttpGet("api/[controller]/Info")]
-
         // Informações do usuário 
-        public ActionResult<UserInfoDTO> Info(string account)
+        public ActionResult<UserInfoDTO> Info([FromHeader] string token)
         {
             try
             {
-                var user = _context.Users.FirstOrDefault(u => u.Account == account);
+                 var user = _validateAndReturnUserService.Validate(token);
+                 
+                 var userDto = _dtoService.GetUserInfoDTO(user);
 
-                if (user == null) return NotFound(new
-                {
-                    Moment = DateTime.Now,
-                    Message = $"Usuário da conta {account} não encontrado."
-                });
-
-                var userAccount = _mapper.Map<UserInfoDTO>(user);
-                return Ok(userAccount);
+                return Ok(userDto);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                return StatusCode(500, new
+                switch (e)
                 {
-                    Moment = DateTime.Now,
-                    Message = "Não foi possível encontrar o usuário."
-                });
+                    case BadHttpRequestException:
+                        return BadRequest(e.Message);
+                    case NotFoundException:
+                        return NotFound(e.Message);
+                    case UnauthorizedAccessException:
+                        return Unauthorized(e.Message);
+                    default:
+                        return StatusCode(500, "Houve algum problema no servidor.");
+                }
             }
 
         }
@@ -189,43 +129,28 @@ namespace ImaPayAPI.Controllers
 
         // Transferência
         [HttpPost("Transfer")]
-        public ActionResult Transfer([FromBody] TransactionDTO transactionDTO)
+        public ActionResult Transfer([FromBody] TransactionDTO transactionDTO, [FromHeader] string token)
         {
             try
             {
-                var valueTransfer = transactionDTO.ValueTransaction;
-                var user = _context.Users.Find(transactionDTO.UserId);
-                decimal balance = (decimal)_context.Entry(user).Property(u => u.Balance).CurrentValue;
+               var user =_validateAndReturnUserService.Validate(token);
+               var transaction = _transferService.Transfer(transactionDTO, user);
                 
-
-                if (valueTransfer > balance)
-                {
-
-                    return NotFound(new { Message = $"Sem saldo: {balance}, valor da transferência {valueTransfer}" });
-                }
-                else
-                {
-                    user.Balance = balance - valueTransfer;
-                }
-
-                var transaction = _mapper.Map<Transaction>(transactionDTO);
-               // string date = String.Format("{yyyy-MM-dd", transaction.Date);
-                if (transaction.Date.Day != DateTime.Today.Day)
-                    transaction.Status = "Agendada";
-                else
-                    transaction.Status = "Realizada";
-                
-                _context.Transactions.Add(transaction);
-                _context.SaveChanges();
-                return Ok(_mapper.Map<TransactionInfoDTO>(transaction));
+                return Ok(transaction);
             }
-            catch(Exception) 
+            catch(Exception e) 
             {
-                return StatusCode(500, new
+                switch (e)
                 {
-                    Moment = DateTime.Now,
-                    Message = "Não foi possível concluir a transação. Tente novamente mais tarde."
-                });
+                    case BadHttpRequestException:
+                        return BadRequest(e.Message);
+                    case NotFoundException:
+                        return NotFound(e.Message);
+                    case UnauthorizedAccessException:
+                        return Unauthorized(e.Message);
+                    default:
+                        return StatusCode(500, "Houve algum problema no servidor.");
+                }
             }
             
 
@@ -233,26 +158,27 @@ namespace ImaPayAPI.Controllers
 
         // Histórico de Transações
         [HttpGet("TransferHistory")]
-        public ActionResult TransferHistory(int userId)
+        public ActionResult TransferHistory([FromHeader] string token)
         {
             try
             {
-                List<Transaction> transactions = _context.Transactions
-                    .Where(t => t.Id == userId)
-                    .OrderByDescending(t => t.Date)
-                    .ToList();
+                var transactions = _transferHistoryService.GetTransferHistory(token);
 
-                // Retorna as transações em um objeto TransferHistoryDTO
-                TransferHistoryDTO transferHistory = new TransferHistoryDTO
-                {
-                    Transactions = transactions
-                };
-
-                return Ok(transferHistory);
+                return Ok(transactions);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return StatusCode(500);
+                switch (e)
+                {
+                    case BadHttpRequestException:
+                        return BadRequest(e.Message);
+                    case NotFoundException:
+                        return NotFound(e.Message);
+                    case UnauthorizedAccessException:
+                        return Unauthorized(e.Message);
+                    default:
+                        return StatusCode(500, "Houve algum problema no servidor.");
+                }
             }
         }
 
