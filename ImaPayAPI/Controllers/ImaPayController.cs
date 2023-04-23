@@ -96,7 +96,6 @@ namespace ImaPayAPI.Controllers
         }
 
         [HttpGet("api/[controller]/Info")]
-        
         // Informações do usuário 
         public ActionResult<UserInfoDTO> Info([FromHeader] string token)
         {
@@ -128,7 +127,6 @@ namespace ImaPayAPI.Controllers
 
         // Transferência
         [HttpPost("Transfer")]
-        [Authorize(Roles = "Usuario")]
         public ActionResult Transfer([FromBody] TransactionDTO transactionDTO,
                                      [FromHeader] string token)
         {
@@ -157,7 +155,6 @@ namespace ImaPayAPI.Controllers
 
         // Histórico de Transações
         [HttpGet("TransferHistory")]
-        [Authorize(Roles = "Usuario")]
         public ActionResult TransferHistory([FromHeader] string token)
         {
             try

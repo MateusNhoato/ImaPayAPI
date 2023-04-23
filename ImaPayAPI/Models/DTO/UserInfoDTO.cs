@@ -2,7 +2,7 @@
 {
     public class UserInfoDTO
     {
-        public string Name { get; set; } = null!;
+        public string UserName { get; set; } = null!;
         public string Account { get; set; } = null!;
         public string Agency { get; set; } = null!;
         public decimal Balance { get; set; }

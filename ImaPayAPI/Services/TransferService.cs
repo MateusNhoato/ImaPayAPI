@@ -18,10 +18,10 @@ namespace ImaPayAPI.Services
 
         public Transaction Transfer(TransactionDTO transactionDTO, User user)
         {
-            var valueTransfer = transactionDTO.ValueTransaction;
-
             if (user == null)
                 throw new UnauthorizedAccessException("Usuário não autorizado.");
+
+            var valueTransfer = transactionDTO.ValueTransaction;
 
             decimal balance = (decimal)_context.Entry(user).Property(u => u.Balance).CurrentValue;
 
@@ -29,8 +29,13 @@ namespace ImaPayAPI.Services
             if (valueTransfer > balance)
                 throw new BadHttpRequestException($"Sem saldo: {balance}, valor da transferência {valueTransfer}");
 
+            var userToReceive = _context.Users.FirstOrDefault(u => u.Account == transactionDTO.Account);
+
+            if (userToReceive == null)
+                throw new BadHttpRequestException("Usuário de destino é inválido");
+
             user.Balance -= valueTransfer;
-            
+            userToReceive.Balance += valueTransfer;
 
             var transaction = _dtoService.GetTransactionFromTransactionDTO(transactionDTO);
 

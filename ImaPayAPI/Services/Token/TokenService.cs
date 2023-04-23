@@ -26,8 +26,7 @@ namespace ApiAuth.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.UserName), // User.Identity.Name
-                    new Claim(ClaimTypes.Role, user.Role), // User.IsRole()
+                    new Claim("Id", user.Id.ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddHours(8),
                 SigningCredentials = new SigningCredentials(
@@ -54,7 +53,7 @@ namespace ApiAuth.Services
 
             var jwtToken = (JwtSecurityToken)validatedToken;
 
-            var userId = int.Parse(jwtToken.Claims.FirstOrDefault(x => x.Type == "id").Value);
+            var userId = int.Parse(jwtToken.Claims.FirstOrDefault(x => x.Type == "Id").Value);
 
             return _context.Users.FirstOrDefault(u => u.Id == userId);
         }

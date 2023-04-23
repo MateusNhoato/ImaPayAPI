@@ -25,11 +25,11 @@ namespace ImaPayAPI.Services
                 throw new BadHttpRequestException("Informações do usuário inválidas.");
 
             User user = _mapper.Map<User>(userDto);
-            user.Balance = new Random().Next(0, 50000);
             user.Agency = 0001;
+            user.Balance = new Random().Next(0, 50000);
             user.Savings = new Random().Next(0, 50000);
             user.Investments = new Random().Next(0, 50000);
-            user.Account = "24124124";
+            user.Account = new Random().Next(0, 5000000).ToString();
 
             if(user == null)
                 throw new BadHttpRequestException("Informações do usuário inválidas.");
