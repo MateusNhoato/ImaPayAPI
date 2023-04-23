@@ -20,6 +20,7 @@ namespace ImaPayAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors]
     public class ImaPayController : Controller
     {
         private RegisterUserService _registerUserService;
