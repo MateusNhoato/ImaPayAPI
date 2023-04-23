@@ -14,6 +14,7 @@ using Microsoft.Extensions.Primitives;
 using ImaPayAPI.Services.Token;
 using ImaPayAPI.Services.DTO;
 using ApiAuth.Services;
+using Microsoft.AspNetCore.Cors;
 
 namespace ImaPayAPI.Controllers
 {
@@ -54,20 +55,20 @@ namespace ImaPayAPI.Controllers
         }
 
         [HttpPost("Login")]
-        public ActionResult<UserLoginDTO> Login([FromBody]UserLoginDTO dto)
+        public ActionResult Login([FromBody]UserLoginDTO dto)
         {
             var token = _loginService.Login(dto);
             return Ok(token);
         }
-
+        
         [HttpGet("Info")]
-        public ActionResult<UserInfoDTO> Info([FromHeader] string token)
+        public ActionResult Info([FromHeader] string token)
         {
             var user = _tokenService.Validate(token);
             var userDto = _dtoService.GetUserInfoDTO(user);
             return Ok(userDto);
         }
-
+        
         [HttpPost("Transfer")]
         public ActionResult Transfer([FromBody] TransactionDTO transactionDTO,
                                      [FromHeader] string token)

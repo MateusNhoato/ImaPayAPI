@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "WdSLmaPvt/+s91kKKise9HtCQyMEVSYJQssgEpqIUE3FppzkUwdU2GuWQ836RvfF1ytKtuqlbvXSL0EpVpsTYg==",
+  "dgSpecHash": "eoQHZVmhxyahPGdH14iTpUYoDRpUDOYajnNpg+5bFcy+nWY6IPtpxBgumFhRalMsoPLLce/K5cjvK9o4lrtyKw==",
   "success": true,
   "projectFilePath": "C:\\roles\\projetos\\csharp\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
   "expectedPackageFiles": [
@@ -13,6 +13,7 @@
     "C:\\Users\\pc\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\pc\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
     "C:\\Users\\pc\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.16\\microsoft.aspnetcore.authentication.jwtbearer.6.0.16.nupkg.sha512",
+    "C:\\Users\\pc\\.nuget\\packages\\microsoft.aspnetcore.cors\\2.2.0\\microsoft.aspnetcore.cors.2.2.0.nupkg.sha512",
     "C:\\Users\\pc\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\2.2.0\\microsoft.aspnetcore.cryptography.internal.2.2.0.nupkg.sha512",
     "C:\\Users\\pc\\.nuget\\packages\\microsoft.aspnetcore.dataprotection\\2.2.0\\microsoft.aspnetcore.dataprotection.2.2.0.nupkg.sha512",
     "C:\\Users\\pc\\.nuget\\packages\\microsoft.aspnetcore.dataprotection.abstractions\\2.2.0\\microsoft.aspnetcore.dataprotection.abstractions.2.2.0.nupkg.sha512",
