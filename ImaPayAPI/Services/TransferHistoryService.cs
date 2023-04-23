@@ -26,7 +26,7 @@ namespace ImaPayAPI.Services
 
 
             List<Models.Transaction> transactions = _context.Transactions
-                .Where(t => t.Id == user.Id)
+                .Where(t => t.Id == user.Id || t.ReceiverId == user.Id)
                 .OrderByDescending(t => t.Date)
                 .ToList();
 
