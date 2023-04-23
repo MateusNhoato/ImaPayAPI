@@ -56,7 +56,6 @@ builder.Services.AddAuthentication(x =>
     });
 
 
-
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -82,6 +81,21 @@ app.MapControllers();
 app.UseCors(x => x.AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowAnyOrigin());
+
+app.Use(async (context, next) =>
+{
+    if (context.Request.Method == "OPTIONS")
+    {
+        context.Response.Headers.Add("Acess-Control-Allow-Origin", "*");
+        context.Response.Headers.Add("Acess-Control-Allow-Headers", "*");
+        context.Response.Headers.Add("Acess-Control-Allow-Methods", "*");
+        context.Response.StatusCode = 200;
+    }
+    else
+    {
+        await next();
+    }
+});
 
 using (var scope = app.Services.CreateScope())
 {
