@@ -36,5 +36,13 @@ namespace ImaPayAPI.Services.DTO
 
             return transactionHistoryDto;
         }
+
+        public TransactionInfoDTO GetTransactionInfoDTO(Transaction transaction)
+        {
+            var transactionDTO = _mapper.Map<TransactionInfoDTO>(transaction);
+
+            return transactionDTO;
+        }
+
     }
 }

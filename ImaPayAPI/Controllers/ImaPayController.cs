@@ -25,12 +25,12 @@ namespace ImaPayAPI.Controllers
         private LoginService _loginService;
         private TransferService _transferService;
         private TransferHistoryService _transferHistoryService;
-        
+
         private DtoService _dtoService;
         private TokenService _tokenService;
 
-        public ImaPayController(RegisterUserService registerUserService, 
-                                LoginService loginService, 
+        public ImaPayController(RegisterUserService registerUserService,
+                                LoginService loginService,
                                 DtoService dtoService,
                                 TransferService transferService,
                                 TransferHistoryService transferHistoryService,
@@ -45,140 +45,46 @@ namespace ImaPayAPI.Controllers
             _tokenService = tokenService;
         }
 
-
-        // Registro do usuário
         [HttpPost("Register")]
         public ActionResult Register(UserRegisterDTO userDto)
         {
-            try
-            {
-                _registerUserService.Register(userDto);
-                return Ok("Usuário cadastrado com sucesso!");
-            }
-            catch (Exception e)
-            {
-                switch (e){
-                    case BadHttpRequestException:
-                        return BadRequest(e.Message);
-                    case NotFoundException:
-                        return NotFound(e.Message);
-                    case UnauthorizedAccessException: 
-                        return Unauthorized(e.Message);
-                    default: 
-                        return StatusCode(500, "Houve algum problema no servidor.");
-                }
-            }
+            _registerUserService.Register(userDto);
+            return Ok("Usuário cadastrado com sucesso!");
+
         }
 
         [HttpPost("Login")]
         public ActionResult<UserLoginDTO> Login(UserLoginDTO dto)
         {
-            try
-            {
-                var token = _loginService.Login(dto);
-
-                return Ok(token);
-            }
-            catch (Exception e)
-            {
-                switch (e)
-                {
-                    case BadHttpRequestException:
-                        return BadRequest(e.Message);
-                    case NotFoundException:
-                        return NotFound(e.Message);
-                    case UnauthorizedAccessException:
-                        return Unauthorized(e.Message);
-                    default:
-                        return StatusCode(500, "Houve algum problema no servidor.");
-                }
-            }
+            var token = _loginService.Login(dto);
+            return Ok(token);
         }
 
         [HttpGet("Info")]
-        // Informações do usuário 
         public ActionResult<UserInfoDTO> Info([FromHeader] string token)
         {
-            try
-            {
-                 var user = _tokenService.Validate(token);
-                 
-                 var userDto = _dtoService.GetUserInfoDTO(user);
-
-                return Ok(userDto);
-            }
-            catch (Exception e)
-            {
-                switch (e)
-                {
-                    case BadHttpRequestException:
-                        return BadRequest(e.Message);
-                    case NotFoundException:
-                        return NotFound(e.Message);
-                    case UnauthorizedAccessException:
-                        return Unauthorized(e.Message);
-                    default:
-                        return StatusCode(500, "Houve algum problema no servidor.");
-                }
-            }
-
+            var user = _tokenService.Validate(token);
+            var userDto = _dtoService.GetUserInfoDTO(user);
+            return Ok(userDto);
         }
 
-
-        // Transferência
         [HttpPost("Transfer")]
         public ActionResult Transfer([FromBody] TransactionDTO transactionDTO,
                                      [FromHeader] string token)
         {
-            try
-            {
-                var user = _tokenService.Validate(token);
-                var transaction = _transferService.Transfer(transactionDTO, user);
+            var user = _tokenService.Validate(token);
+            var transaction = _transferService.Transfer(transactionDTO, user);
 
-                return Ok(transaction);
-            }
-            catch (Exception e)
-            {
-                switch (e)
-                {
-                    case BadHttpRequestException:
-                        return BadRequest(e.Message);
-                    case NotFoundException:
-                        return NotFound(e.Message);
-                    case UnauthorizedAccessException:
-                        return Unauthorized(e.Message);
-                    default:
-                        return StatusCode(500, "Houve algum problema no servidor.");
-                }
-            }
+            var transactionInfoDTO = _dtoService.GetTransactionInfoDTO(transaction);
+            
+            return Ok(transactionInfoDTO);
         }
 
-        // Histórico de Transações
         [HttpGet("TransferHistory")]
         public ActionResult TransferHistory([FromHeader] string token)
         {
-            try
-            {
-                var transactions = _transferHistoryService.GetTransferHistory(token);
-
-                return Ok(transactions);
-            }
-            catch (Exception e)
-            {
-                switch (e)
-                {
-                    case BadHttpRequestException:
-                        return BadRequest(e.Message);
-                    case NotFoundException:
-                        return NotFound(e.Message);
-                    case UnauthorizedAccessException:
-                        return Unauthorized(e.Message);
-                    default:
-                        return StatusCode(500, "Houve algum problema no servidor.");
-                }
-            }
+            var transactions = _transferHistoryService.GetTransferHistory(token);
+            return Ok(transactions);
         }
-
-
     }
 }

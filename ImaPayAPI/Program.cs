@@ -87,5 +87,6 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<ImayPayContext>();
     context.Database.Migrate();
 }
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.Run();

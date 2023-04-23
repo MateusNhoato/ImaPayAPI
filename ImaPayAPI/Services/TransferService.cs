@@ -45,6 +45,13 @@ namespace ImaPayAPI.Services
             else
                 transaction.Status = "Realizada";
 
+            // usuário fazendo a transação
+            transaction.User = user;
+            transaction.UserId = user.Id;
+
+            transaction.Receiver = userToReceive;
+            transaction.ReceiverId = userToReceive.Id;
+
             _context.Transactions.Add(transaction);
             _context.SaveChanges();
 
