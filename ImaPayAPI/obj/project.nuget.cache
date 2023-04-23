@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "BYExa2xSoyRsSzNNzsv8LdHd4IvgEsNNAqu7Mcgl+OxXIowRLud2T8AgA6JL/Dgev1uv0+8jmljIzQls2Fouig==",
+  "dgSpecHash": "c3vikEv5J+3NjIqwyVj/hvERfXsNLRSfRRNFX5ZXprx2gJzEgBegWPBSseoPOdocaSgodNSyzVAR3G7g2Rcriw==",
   "success": true,
   "projectFilePath": "C:\\roles\\projetos\\csharp\\ImaPayAPI\\ImaPayAPI\\ImaPayAPI.csproj",
   "expectedPackageFiles": [
@@ -66,6 +66,7 @@
     "C:\\Users\\pc\\.nuget\\packages\\microsoft.netcore.targets\\2.0.0\\microsoft.netcore.targets.2.0.0.nupkg.sha512",
     "C:\\Users\\pc\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\pc\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
+    "C:\\Users\\pc\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.17.2\\microsoft.visualstudio.azure.containers.tools.targets.1.17.2.nupkg.sha512",
     "C:\\Users\\pc\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\pc\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
     "C:\\Users\\pc\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
