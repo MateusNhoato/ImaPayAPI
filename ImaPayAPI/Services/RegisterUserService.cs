@@ -33,7 +33,7 @@ namespace ImaPayAPI.Services
             bool repeatedAccountNumber = false;
             do
             {
-                user.Account = new Random().Next(0, 5000000).ToString();
+                user.Account = new Random().Next(10000, 99999).ToString();
 
                 foreach(User u in _context.Users)
                 {
