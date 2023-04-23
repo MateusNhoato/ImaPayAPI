@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Primitives;
 using ImaPayAPI.Services.Token;
 using ImaPayAPI.Services.DTO;
+using ApiAuth.Services;
 
 namespace ImaPayAPI.Controllers
 {
@@ -22,29 +23,26 @@ namespace ImaPayAPI.Controllers
     {
         private RegisterUserService _registerUserService;
         private LoginService _loginService;
-        private ValidateAndReturnUserService _validateAndReturnUserService;
         private TransferService _transferService;
         private TransferHistoryService _transferHistoryService;
         
         private DtoService _dtoService;
-
-
+        private TokenService _tokenService;
 
         public ImaPayController(RegisterUserService registerUserService, 
                                 LoginService loginService, 
-                                ValidateAndReturnUserService validateAndReturnUserService,
                                 DtoService dtoService,
                                 TransferService transferService,
-                                TransferHistoryService transferHistoryService
+                                TransferHistoryService transferHistoryService,
+                                TokenService tokenService
                                 )
         {
             _registerUserService = registerUserService;
             _loginService = loginService;
-            _validateAndReturnUserService = validateAndReturnUserService;
             _dtoService = dtoService;
             _transferService = transferService;
             _transferHistoryService = transferHistoryService;
-            
+            _tokenService = tokenService;
         }
 
 
@@ -98,12 +96,13 @@ namespace ImaPayAPI.Controllers
         }
 
         [HttpGet("api/[controller]/Info")]
+        
         // Informações do usuário 
         public ActionResult<UserInfoDTO> Info([FromHeader] string token)
         {
             try
             {
-                 var user = _validateAndReturnUserService.Validate(token);
+                 var user = _tokenService.Validate(token);
                  
                  var userDto = _dtoService.GetUserInfoDTO(user);
 
@@ -129,16 +128,18 @@ namespace ImaPayAPI.Controllers
 
         // Transferência
         [HttpPost("Transfer")]
-        public ActionResult Transfer([FromBody] TransactionDTO transactionDTO, [FromHeader] string token)
+        [Authorize(Roles = "Usuario")]
+        public ActionResult Transfer([FromBody] TransactionDTO transactionDTO,
+                                     [FromHeader] string token)
         {
             try
             {
-               var user =_validateAndReturnUserService.Validate(token);
-               var transaction = _transferService.Transfer(transactionDTO, user);
-                
+                var user = _tokenService.Validate(token);
+                var transaction = _transferService.Transfer(transactionDTO, user);
+
                 return Ok(transaction);
             }
-            catch(Exception e) 
+            catch (Exception e)
             {
                 switch (e)
                 {
@@ -152,12 +153,11 @@ namespace ImaPayAPI.Controllers
                         return StatusCode(500, "Houve algum problema no servidor.");
                 }
             }
-            
-
         }
 
         // Histórico de Transações
         [HttpGet("TransferHistory")]
+        [Authorize(Roles = "Usuario")]
         public ActionResult TransferHistory([FromHeader] string token)
         {
             try

@@ -5,6 +5,10 @@ using Models.Profiles;
 using ImaPayAPI.Services.DTO;
 using ImaPayAPI.Services;
 using ImaPayAPI.Services.Token;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using ApiAuth.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,13 +28,29 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddScoped(typeof(DtoService));
-builder.Services.AddScoped(typeof(GenerateTokenService));
-builder.Services.AddScoped(typeof(LinkUserToTokenService));
-builder.Services.AddScoped(typeof(ValidateAndReturnUserService));
+builder.Services.AddScoped(typeof(TokenService));
 builder.Services.AddScoped(typeof(LoginService));
 builder.Services.AddScoped(typeof(RegisterUserService));
 builder.Services.AddScoped(typeof(TransferHistoryService));
 builder.Services.AddScoped(typeof(TransferService));
+
+var key = Encoding.ASCII.GetBytes(TokenSettings.Secret);
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(x => {
+        x.RequireHttpsMetadata = false;
+        x.SaveToken = true;
+        x.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
 
 
 
@@ -56,6 +76,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

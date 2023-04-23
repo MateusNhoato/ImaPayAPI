@@ -1,7 +1,9 @@
-﻿using AutoMapper;
+﻿using ApiAuth.Services;
+using AutoMapper;
 using ImaPayAPI.Context;
 using ImaPayAPI.Models;
 using ImaPayAPI.Models.DTO;
+using ImaPayAPI.Services.DTO;
 using ImaPayAPI.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -9,16 +11,13 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace ImaPayAPI.Services
 {
-    public class RegisterUserService
+    public class RegisterUserService : BaseService
     {
-        private ImayPayContext _context;
-        private IMapper _mapper;
-
-        public RegisterUserService(ImayPayContext context, IMapper mapper)
-        {
-            _context = context;
-            _mapper = mapper;
-        }
+        public RegisterUserService(ImayPayContext context, 
+                                   IMapper mapper, 
+                                   DtoService dtoService, 
+                                   TokenService tokenService) 
+                                  : base(context, mapper, dtoService, tokenService){}
 
         public User Register(UserRegisterDTO userDto)
         {

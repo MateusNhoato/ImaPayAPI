@@ -1,4 +1,6 @@
-﻿using ImaPayAPI.Context;
+﻿using ApiAuth.Services;
+using AutoMapper;
+using ImaPayAPI.Context;
 using ImaPayAPI.Models;
 using ImaPayAPI.Models.DTO;
 using ImaPayAPI.Services.DTO;
@@ -6,18 +8,13 @@ using ImaPayAPI.Services.Token;
 
 namespace ImaPayAPI.Services
 {
-    public class TransferService
+    public class TransferService : BaseService
     {
-        private ImayPayContext _context;
-        private DtoService _dtoService;
-        private ValidateAndReturnUserService _validateAndReturnUserService;
-
-        public TransferService(ImayPayContext context, DtoService dtoService, ValidateAndReturnUserService validateAndReturnUserService)
-        {
-            _context = context;
-            _dtoService = dtoService;
-            _validateAndReturnUserService = validateAndReturnUserService; 
-        }
+        public TransferService(ImayPayContext context,
+            IMapper mapper, 
+            DtoService dtoService,
+            TokenService tokenService) 
+            : base(context, mapper, dtoService, tokenService){}
 
         public Transaction Transfer(TransactionDTO transactionDTO, User user)
         {

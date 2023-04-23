@@ -37,6 +37,7 @@ public class User : Entity
 
     public bool IsActive { get; set; } = true;
     [NotMapped]
-    public ICollection<Transaction> transactions { get; set; }
+    public ICollection<Transaction> Transactions { get; set; }
+    public string Role { get; set; } = "Usuario";
 
 }
