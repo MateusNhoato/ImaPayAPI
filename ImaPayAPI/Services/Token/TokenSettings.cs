@@ -1,4 +1,4 @@
-﻿namespace ImaPayAPI.Models
+﻿namespace ImaPayAPI.Services.Token
 {
     public static class TokenSettings
     {

@@ -1,23 +1,20 @@
-﻿using AutoMapper;
+﻿using ApiAuth.Services;
+using AutoMapper;
 using ImaPayAPI.Context;
 using ImaPayAPI.Models;
 using ImaPayAPI.Models.DTO;
+using ImaPayAPI.Services.DTO;
 using ImaPayAPI.Services.Exceptions;
 
 namespace ImaPayAPI.Services
 {
-    public class LoginService
+    public class LoginService : BaseService
     {
-        private ImayPayContext _context;
-        private IMapper _mapper;
-        private GenerateTokenService _generateTokenService;
-
-        public LoginService(ImayPayContext context, IMapper mapper,GenerateTokenService generateTokenService )
-        {
-            _context = context;
-            _mapper = mapper;
-            _generateTokenService = generateTokenService;
-        }
+        public LoginService(ImayPayContext context, 
+                            IMapper mapper, 
+                            DtoService dtoService,
+                            TokenService tokenService) 
+                            : base(context, mapper, dtoService, tokenService){}
 
         public string Login(UserLoginDTO dto)
         {
@@ -26,9 +23,8 @@ namespace ImaPayAPI.Services
             if (user == null || user.Password != dto.Password)
                 throw new NotFoundException($"Email e/ou senha inválidos.");
 
-            var Expires = DateTime.Now.AddHours(2);
-            var token = _generateTokenService.Gerar(user, Expires);
-
+            var token = _tokenService.GenerateToken(user);
+            
             return token;
         }
     }

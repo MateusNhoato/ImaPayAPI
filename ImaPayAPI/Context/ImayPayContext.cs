@@ -9,9 +9,6 @@ namespace ImaPayAPI.Context
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<TransactionHistory> TransactionsHistory { get; set; }
 
-        public Dictionary<string, User> userToken = new Dictionary<string, User>();
-
-
         public ImayPayContext(DbContextOptions options) : base(options)
         {
         }
