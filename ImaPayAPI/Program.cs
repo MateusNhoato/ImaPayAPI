@@ -15,8 +15,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
+string connectionString = builder.Configuration.GetConnectionString("ImaPayContext");
+var sqlVersion = ServerVersion.AutoDetect(connectionString);
+
 builder.Services.AddDbContext<ImayPayContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("ImaPayContext") ?? throw new InvalidOperationException("Connection string 'webApiProcessosContext' not found.")));
+                options.UseMySql(connectionString, sqlVersion));
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
