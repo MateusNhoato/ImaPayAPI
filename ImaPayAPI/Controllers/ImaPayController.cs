@@ -47,7 +47,7 @@ namespace ImaPayAPI.Controllers
 
 
         // Registro do usuário
-        [HttpPost("api/[controller]/Register")]
+        [HttpPost("Register")]
         public ActionResult Register(UserRegisterDTO userDto)
         {
             try
@@ -95,7 +95,7 @@ namespace ImaPayAPI.Controllers
             }
         }
 
-        [HttpGet("api/[controller]/Info")]
+        [HttpGet("Info")]
         // Informações do usuário 
         public ActionResult<UserInfoDTO> Info([FromHeader] string token)
         {
