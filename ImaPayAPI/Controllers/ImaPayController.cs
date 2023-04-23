@@ -51,7 +51,10 @@ namespace ImaPayAPI.Controllers
         public ActionResult Register([FromBody]UserRegisterDTO userDto)
         {
             _registerUserService.Register(userDto);
-            return Ok("Usuário cadastrado com sucesso!");
+            return Ok(new
+            {
+                Message = "Usuário cadastrado com sucesso!"
+            });
 
         }
 
@@ -59,7 +62,10 @@ namespace ImaPayAPI.Controllers
         public ActionResult Login([FromBody]UserLoginDTO dto)
         {
             var token = _loginService.Login(dto);
-            return Ok(token);
+            return Ok(new
+            {
+                token = token
+            });
         }
         
         [HttpGet("Info")]
