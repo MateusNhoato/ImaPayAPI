@@ -3,80 +3,182 @@ using ImaPayAPI.Models;
 using ImaPayAPI.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using ImaPayAPI.Services;
+using ImaPayAPI.Services.Exceptions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Primitives;
+using ImaPayAPI.Services.Token;
+using ImaPayAPI.Services.DTO;
+using ApiAuth.Services;
 
 namespace ImaPayAPI.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     public class ImaPayController : Controller
     {
-        private ImayPayContext _context;
-        private IMapper _mapper;
-       
-        public ImaPayController(ImayPayContext context, IMapper mapper) {
-            _context = context;
-            _mapper = mapper;
-                }
+        private RegisterUserService _registerUserService;
+        private LoginService _loginService;
+        private TransferService _transferService;
+        private TransferHistoryService _transferHistoryService;
+        
+        private DtoService _dtoService;
+        private TokenService _tokenService;
+
+        public ImaPayController(RegisterUserService registerUserService, 
+                                LoginService loginService, 
+                                DtoService dtoService,
+                                TransferService transferService,
+                                TransferHistoryService transferHistoryService,
+                                TokenService tokenService
+                                )
+        {
+            _registerUserService = registerUserService;
+            _loginService = loginService;
+            _dtoService = dtoService;
+            _transferService = transferService;
+            _transferHistoryService = transferHistoryService;
+            _tokenService = tokenService;
+        }
+
 
         // Registro do usuário
-        [HttpPost("api/[controller]/Register")]
-        public ActionResult<UserInfoDTO> Register(UserRegisterDTO userDto)
+        [HttpPost("Register")]
+        public ActionResult Register(UserRegisterDTO userDto)
         {
-            var user = _mapper.Map<User>(userDto);
-            user.Balance = 5000;
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            
-            var result = _mapper.Map<UserInfoDTO>(user);
-
-            if (result == null) return BadRequest(new {
-                Moment = DateTime.Now,
-                Message = $"Não foi possível cadastrar o usuário."
-            });
-
-            return Ok(result);
+            try
+            {
+                _registerUserService.Register(userDto);
+                return Ok("Usuário cadastrado com sucesso!");
+            }
+            catch (Exception e)
+            {
+                switch (e){
+                    case BadHttpRequestException:
+                        return BadRequest(e.Message);
+                    case NotFoundException:
+                        return NotFound(e.Message);
+                    case UnauthorizedAccessException: 
+                        return Unauthorized(e.Message);
+                    default: 
+                        return StatusCode(500, "Houve algum problema no servidor.");
+                }
+            }
         }
 
-        // Login 
-        [HttpGet("api/[controller]/Login")]
-        public ActionResult Login()
+        [HttpPost("Login")]
+        public ActionResult<UserLoginDTO> Login(UserLoginDTO dto)
         {
-            
-            return Ok();
+            try
+            {
+                var token = _loginService.Login(dto);
+
+                return Ok(token);
+            }
+            catch (Exception e)
+            {
+                switch (e)
+                {
+                    case BadHttpRequestException:
+                        return BadRequest(e.Message);
+                    case NotFoundException:
+                        return NotFound(e.Message);
+                    case UnauthorizedAccessException:
+                        return Unauthorized(e.Message);
+                    default:
+                        return StatusCode(500, "Houve algum problema no servidor.");
+                }
+            }
         }
 
-        [HttpGet("api/[controller]/Info")]
-
+        [HttpGet("Info")]
         // Informações do usuário 
-        public ActionResult<UserInfoDTO> Info(string account)
+        public ActionResult<UserInfoDTO> Info([FromHeader] string token)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Account == account);
+            try
+            {
+                 var user = _tokenService.Validate(token);
+                 
+                 var userDto = _dtoService.GetUserInfoDTO(user);
 
-            if (user == null) return NotFound(new {
-                Moment = DateTime.Now,
-                Message = $"Usuário da conta {account} não encontrado."
-            });
-
-            var userAccount = _mapper.Map<UserInfoDTO>(user);
-            return Ok(userAccount);
+                return Ok(userDto);
+            }
+            catch (Exception e)
+            {
+                switch (e)
+                {
+                    case BadHttpRequestException:
+                        return BadRequest(e.Message);
+                    case NotFoundException:
+                        return NotFound(e.Message);
+                    case UnauthorizedAccessException:
+                        return Unauthorized(e.Message);
+                    default:
+                        return StatusCode(500, "Houve algum problema no servidor.");
+                }
+            }
 
         }
 
 
         // Transferência
-        [HttpPatch("api/[controller]/Transfer")]
-        public ActionResult Transfer()
+        [HttpPost("Transfer")]
+        public ActionResult Transfer([FromBody] TransactionDTO transactionDTO,
+                                     [FromHeader] string token)
         {
-            return Ok();
+            try
+            {
+                var user = _tokenService.Validate(token);
+                var transaction = _transferService.Transfer(transactionDTO, user);
+
+                return Ok(transaction);
+            }
+            catch (Exception e)
+            {
+                switch (e)
+                {
+                    case BadHttpRequestException:
+                        return BadRequest(e.Message);
+                    case NotFoundException:
+                        return NotFound(e.Message);
+                    case UnauthorizedAccessException:
+                        return Unauthorized(e.Message);
+                    default:
+                        return StatusCode(500, "Houve algum problema no servidor.");
+                }
+            }
         }
 
-        [HttpGet("api/[controller]/TransferHistory")]
-
-        // Histórico de Transações 
-        public ActionResult TransferHistory()
+        // Histórico de Transações
+        [HttpGet("TransferHistory")]
+        public ActionResult TransferHistory([FromHeader] string token)
         {
-            return Ok();
+            try
+            {
+                var transactions = _transferHistoryService.GetTransferHistory(token);
+
+                return Ok(transactions);
+            }
+            catch (Exception e)
+            {
+                switch (e)
+                {
+                    case BadHttpRequestException:
+                        return BadRequest(e.Message);
+                    case NotFoundException:
+                        return NotFound(e.Message);
+                    case UnauthorizedAccessException:
+                        return Unauthorized(e.Message);
+                    default:
+                        return StatusCode(500, "Houve algum problema no servidor.");
+                }
+            }
         }
 
-    
+
     }
 }
