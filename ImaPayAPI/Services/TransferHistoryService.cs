@@ -11,13 +11,13 @@ namespace ImaPayAPI.Services
 {
     public class TransferHistoryService : BaseService
     {
-        public TransferHistoryService(ImayPayContext context, 
-            IMapper mapper, 
+        public TransferHistoryService(ImayPayContext context,
+            IMapper mapper,
             DtoService dtoService,
-            TokenService tokenService) 
-            : base(context, mapper, dtoService, tokenService){}
+            TokenService tokenService)
+            : base(context, mapper, dtoService, tokenService) { }
 
-        public TransferHistoryDTO GetTransferHistory(string token) 
+        public TransferHistoryDTO GetTransferHistory(string token)
         {
             var user = _tokenService.Validate(token);
 
@@ -25,12 +25,11 @@ namespace ImaPayAPI.Services
                 throw new UnauthorizedAccessException("Usuário não autorizado.");
 
 
-                var transactions = _context.Transactions
-                .Where(t => t.Id == user.Id || t.ReceiverId == user.Id)
-                .OrderByDescending(t => t.Date)
-                .ToList();
+            var transactions = _context.Transactions
+            .Where(t => t.UserId == user.Id || t.ReceiverId == user.Id)
+            .OrderByDescending(t => t.Date)
+            .ToList();
 
-            
             var transferHistory = _dtoService.GetTransactionHistoryDTO(transactions);
 
             return transferHistory;

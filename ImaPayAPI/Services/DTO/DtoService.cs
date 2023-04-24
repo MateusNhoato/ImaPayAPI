@@ -37,8 +37,6 @@ namespace ImaPayAPI.Services.DTO
                 Status = t.Status,
                 AccountType = t.AccountType,
                 ValueTransaction = t.ValueTransaction
-
-
             }).ToList();
 
             var transactionHistoryDto = new TransferHistoryDTO
