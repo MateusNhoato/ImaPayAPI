@@ -28,6 +28,19 @@ namespace ImaPayAPI.Services
             var transactions = _context.Transactions
             .Where(t => t.UserId == user.Id || t.ReceiverId == user.Id)
             .OrderByDescending(t => t.Date)
+            .Select( t => new Models.Transaction
+            {
+                Account = t.Account,
+                Agency = t.Agency,
+                Date = t.Date,
+                AccountType = t.AccountType,
+                Status = t.Status,
+                User = t.User,
+                UserId = t.UserId,
+                ReceiverId = t.ReceiverId,
+                Receiver = t.Receiver,
+                ValueTransaction = (t.ReceiverId == user.Id)? t.ValueTransaction : t.ValueTransaction * -1
+            })
             .ToList();
 
             var transferHistory = _dtoService.GetTransactionHistoryDTO(transactions);
