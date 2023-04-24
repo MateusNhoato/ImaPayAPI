@@ -29,10 +29,13 @@ public class User : Entity
     [MaxLength(100)]
     public string Address { get; set; } = null!;
     [Required]
+    [Column(TypeName = "decimal(18,2)")]
     public decimal? Balance { get; set; } = null!;
     [Required]
+    [Column(TypeName = "decimal(18,2)")]
     public decimal Investments { get; set; }
     [Required]
+    [Column(TypeName = "decimal(18,2)")]
     public decimal Savings { get; set; }
 
     public bool IsActive { get; set; } = true;
