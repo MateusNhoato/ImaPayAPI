@@ -92,6 +92,7 @@ namespace ImaPayAPI.Controllers
         public ActionResult TransferHistory([FromHeader] string token)
         {
             var transactions = _transferHistoryService.GetTransferHistory(token);
+
             return Ok(transactions);
         }
     }

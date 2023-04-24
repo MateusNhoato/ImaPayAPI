@@ -25,11 +25,12 @@ namespace ImaPayAPI.Services
                 throw new UnauthorizedAccessException("Usuário não autorizado.");
 
 
-            List<Models.Transaction> transactions = _context.Transactions
+                var transactions = _context.Transactions
                 .Where(t => t.Id == user.Id || t.ReceiverId == user.Id)
                 .OrderByDescending(t => t.Date)
                 .ToList();
 
+            
             var transferHistory = _dtoService.GetTransactionHistoryDTO(transactions);
 
             return transferHistory;
