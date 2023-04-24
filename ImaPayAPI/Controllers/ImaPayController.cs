@@ -14,23 +14,25 @@ using Microsoft.Extensions.Primitives;
 using ImaPayAPI.Services.Token;
 using ImaPayAPI.Services.DTO;
 using ApiAuth.Services;
+using Microsoft.AspNetCore.Cors;
 
 namespace ImaPayAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors]
     public class ImaPayController : Controller
     {
         private RegisterUserService _registerUserService;
         private LoginService _loginService;
         private TransferService _transferService;
         private TransferHistoryService _transferHistoryService;
-        
+
         private DtoService _dtoService;
         private TokenService _tokenService;
 
-        public ImaPayController(RegisterUserService registerUserService, 
-                                LoginService loginService, 
+        public ImaPayController(RegisterUserService registerUserService,
+                                LoginService loginService,
                                 DtoService dtoService,
                                 TransferService transferService,
                                 TransferHistoryService transferHistoryService,
@@ -45,140 +47,53 @@ namespace ImaPayAPI.Controllers
             _tokenService = tokenService;
         }
 
-
-        // Registro do usuário
         [HttpPost("Register")]
-        public ActionResult Register(UserRegisterDTO userDto)
+        public ActionResult Register([FromBody]UserRegisterDTO userDto)
         {
-            try
+            _registerUserService.Register(userDto);
+            return Ok(new
             {
-                _registerUserService.Register(userDto);
-                return Ok("Usuário cadastrado com sucesso!");
-            }
-            catch (Exception e)
-            {
-                switch (e){
-                    case BadHttpRequestException:
-                        return BadRequest(e.Message);
-                    case NotFoundException:
-                        return NotFound(e.Message);
-                    case UnauthorizedAccessException: 
-                        return Unauthorized(e.Message);
-                    default: 
-                        return StatusCode(500, "Houve algum problema no servidor.");
-                }
-            }
+                Message = "Usuário cadastrado com sucesso!"
+            });
+
         }
 
         [HttpPost("Login")]
-        public ActionResult<UserLoginDTO> Login(UserLoginDTO dto)
+        public ActionResult Login([FromBody]UserLoginDTO dto)
         {
-            try
+            var token = _loginService.Login(dto);
+            return Ok(new
             {
-                var token = _loginService.Login(dto);
-
-                return Ok(token);
-            }
-            catch (Exception e)
-            {
-                switch (e)
-                {
-                    case BadHttpRequestException:
-                        return BadRequest(e.Message);
-                    case NotFoundException:
-                        return NotFound(e.Message);
-                    case UnauthorizedAccessException:
-                        return Unauthorized(e.Message);
-                    default:
-                        return StatusCode(500, "Houve algum problema no servidor.");
-                }
-            }
+                token = token
+            });
         }
-
+        
         [HttpGet("Info")]
-        // Informações do usuário 
-        public ActionResult<UserInfoDTO> Info([FromHeader] string token)
+        public ActionResult Info([FromHeader] string token)
         {
-            try
-            {
-                 var user = _tokenService.Validate(token);
-                 
-                 var userDto = _dtoService.GetUserInfoDTO(user);
-
-                return Ok(userDto);
-            }
-            catch (Exception e)
-            {
-                switch (e)
-                {
-                    case BadHttpRequestException:
-                        return BadRequest(e.Message);
-                    case NotFoundException:
-                        return NotFound(e.Message);
-                    case UnauthorizedAccessException:
-                        return Unauthorized(e.Message);
-                    default:
-                        return StatusCode(500, "Houve algum problema no servidor.");
-                }
-            }
-
+            var user = _tokenService.Validate(token);
+            var userDto = _dtoService.GetUserInfoDTO(user);
+            return Ok(userDto);
         }
-
-
-        // Transferência
+        
         [HttpPost("Transfer")]
         public ActionResult Transfer([FromBody] TransactionDTO transactionDTO,
                                      [FromHeader] string token)
         {
-            try
-            {
-                var user = _tokenService.Validate(token);
-                var transaction = _transferService.Transfer(transactionDTO, user);
+            var user = _tokenService.Validate(token);
+            var transaction = _transferService.Transfer(transactionDTO, user);
 
-                return Ok(transaction);
-            }
-            catch (Exception e)
-            {
-                switch (e)
-                {
-                    case BadHttpRequestException:
-                        return BadRequest(e.Message);
-                    case NotFoundException:
-                        return NotFound(e.Message);
-                    case UnauthorizedAccessException:
-                        return Unauthorized(e.Message);
-                    default:
-                        return StatusCode(500, "Houve algum problema no servidor.");
-                }
-            }
+            var transactionInfoDTO = _dtoService.GetTransactionInfoDTO(transaction);
+            
+            return Ok(transactionInfoDTO);
         }
 
-        // Histórico de Transações
         [HttpGet("TransferHistory")]
         public ActionResult TransferHistory([FromHeader] string token)
         {
-            try
-            {
-                var transactions = _transferHistoryService.GetTransferHistory(token);
+            var transactions = _transferHistoryService.GetTransferHistory(token);
 
-                return Ok(transactions);
-            }
-            catch (Exception e)
-            {
-                switch (e)
-                {
-                    case BadHttpRequestException:
-                        return BadRequest(e.Message);
-                    case NotFoundException:
-                        return NotFound(e.Message);
-                    case UnauthorizedAccessException:
-                        return Unauthorized(e.Message);
-                    default:
-                        return StatusCode(500, "Houve algum problema no servidor.");
-                }
-            }
+            return Ok(transactions);
         }
-
-
     }
 }

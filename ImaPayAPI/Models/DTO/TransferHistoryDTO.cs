@@ -4,6 +4,6 @@ namespace ImaPayAPI.Models.DTO
 {
     public class TransferHistoryDTO
     {
-        public List<Transaction> Transactions { get; set; }
+        public List<TransactionInfoDTO> Transactions { get; set; }
     }
 }

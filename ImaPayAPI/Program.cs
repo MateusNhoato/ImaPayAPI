@@ -15,8 +15,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
+string connectionString = builder.Configuration.GetConnectionString("ImaPayContext");
+var sqlVersion = ServerVersion.AutoDetect(connectionString);
+
 builder.Services.AddDbContext<ImayPayContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("ImaPayContext") ?? throw new InvalidOperationException("Connection string 'webApiProcessosContext' not found.")));
+                options.UseMySql(connectionString, sqlVersion));
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -53,7 +56,6 @@ builder.Services.AddAuthentication(x =>
     });
 
 
-
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -66,12 +68,8 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
@@ -79,5 +77,33 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
+
+app.UseCors(x => x.AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowAnyOrigin());
+
+app.Use(async (context, next) =>
+{
+    if (context.Request.Method == "OPTIONS")
+    {
+        context.Response.Headers.Add("Acess-Control-Allow-Origin", "*");
+        context.Response.Headers.Add("Acess-Control-Allow-Headers", "*");
+        context.Response.Headers.Add("Acess-Control-Allow-Methods", "*");
+        context.Response.StatusCode = 200;
+    }
+    else
+    {
+        await next();
+    }
+});
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ImayPayContext>();
+    context.Database.Migrate();
+}
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.Run();

@@ -29,12 +29,30 @@ namespace ImaPayAPI.Services.DTO
 
         public TransferHistoryDTO GetTransactionHistoryDTO(List<Transaction> transactions) 
         {
+            var transactionsInfoDTO = transactions.Select(t => new TransactionInfoDTO
+            {
+                Date = t.Date,
+                Account = t.Account,
+                Agency = t.Agency,
+                Status = t.Status,
+                AccountType = t.AccountType,
+                ValueTransaction = t.ValueTransaction
+            }).ToList();
+
             var transactionHistoryDto = new TransferHistoryDTO
             {
-                Transactions = transactions
+                Transactions = transactionsInfoDTO
             };   
 
             return transactionHistoryDto;
         }
+
+        public TransactionInfoDTO GetTransactionInfoDTO(Transaction transaction)
+        {
+            var transactionDTO = _mapper.Map<TransactionInfoDTO>(transaction);
+
+            return transactionDTO;
+        }
+
     }
 }

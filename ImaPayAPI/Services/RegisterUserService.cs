@@ -29,7 +29,19 @@ namespace ImaPayAPI.Services
             user.Balance = new Random().Next(0, 50000);
             user.Savings = new Random().Next(0, 50000);
             user.Investments = new Random().Next(0, 50000);
-            user.Account = new Random().Next(0, 5000000).ToString();
+
+            bool repeatedAccountNumber = false;
+            do
+            {
+                user.Account = new Random().Next(10000, 99999).ToString();
+
+                foreach(User u in _context.Users)
+                {
+                    if(u.Account == user.Account)
+                        repeatedAccountNumber = true;
+                }
+            } while(repeatedAccountNumber);
+
 
             if(user == null)
                 throw new BadHttpRequestException("Informações do usuário inválidas.");
